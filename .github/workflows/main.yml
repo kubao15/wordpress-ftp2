@@ -1,0 +1,38 @@
+name: Deploy to FTP
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['12','14','16']
+    steps:
+      - name: Krok 1
+        uses: actions/checkout@v2
+      - name: Krok 2
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14.x"
+
+      - name: instalacja zaleznosci
+        run: npm install
+      - name: Budowa projektu
+        run: npm run build
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Deploy WP theme
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: "s1.ct8.pl"
+        server-dir: "./domains/mieteq22.ct8.pl/public_html/wp-content/themes/nowy_szablon2/"
+        username: ${{secrets.FTP_USERNAME}}
+        password: ${{secrets.FTP_PASSWORD}}
