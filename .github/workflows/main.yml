@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         node-version: ['12','14','16']
-      steps:
+    steps:
       - name: Krok 1
         uses: actions/checkout@v2
       - name: Krok 2
